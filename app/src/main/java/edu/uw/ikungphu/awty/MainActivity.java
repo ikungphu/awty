@@ -54,11 +54,14 @@ public class MainActivity extends ActionBarActivity {
                         // set alarm
                         int interval = Integer.parseInt(intervalString);
 
-                        String phoneString = "(" + number.substring(0, 3) + ") " +
-                                number.substring(3, 6) + "-" + number.substring(6);
+                        //String phoneString = "(" + number.substring(0, 3) + ") " +
+                        //        number.substring(3, 6) + "-" + number.substring(6);
 
                         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                        intent.putExtra("message", phoneString + ": " + message);
+                        //intent.putExtra("message", phoneString + ": " + message);
+                        intent.setAction("ikungphu.washington.edu.awty");
+                        intent.putExtra("message", message);
+                        intent.putExtra("number", number);
 
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
                                 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -71,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
                 } else {
                     // stop service
                     Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                    intent.setAction("ikungphu.washington.edu.awty");
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),
                             0, intent, PendingIntent.FLAG_NO_CREATE);
                     stop(pendingIntent);
@@ -86,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
         int time = interval * 1000;
 
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + time, time, pendingIntent);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + time, time, pendingIntent);
     }
 
     private void stop(PendingIntent pendingIntent) {
